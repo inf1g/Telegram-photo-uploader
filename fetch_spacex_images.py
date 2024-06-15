@@ -19,13 +19,6 @@ def args_parser():
         for image in spacex_request():
             saving_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]), extension_returner(image))
 
-    # if args.id:
-    #     for image_name, image_url in enumerate(spacex_request(idl=args.id)):
-    #         saving_img(image_url, image_name, extension_returner(image_url))
-    # else:
-    #     for image_name, image_url in enumerate(spacex_request()):
-    #         saving_img(image_url, image_name, extension_returner(image_url))
-
 
 def spacex_request(idl="6243ad8baf52800c6e919252"):
     response = requests.get(f"https://api.spacexdata.com/v5/launches/{idl}")
