@@ -3,6 +3,12 @@ import requests
 import os
 from urllib.parse import urlparse
 from dotenv import load_dotenv
+import images_saver
+import subprocess
+import sys
+
+
+
 
 
 def configure_keys(token):
@@ -73,3 +79,15 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def main():
+    args = ["-u https://images.wallpaperscraft.ru/image/single/margaritka_lepestki_tsvetok_1252445_300x168.jpg", "-f name", "-if jpeg", "-p image-test\\"]
+
+    subprocess.call([sys.executable, "images_saver.py"] + args)
+
+
+
+if __name__ == "__main__":
+    main()
+
