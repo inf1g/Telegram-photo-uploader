@@ -10,7 +10,6 @@ def tg_bot():
     bot.get_updates()
 
 
-
 def main():
     tg_bot()
 
