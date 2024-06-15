@@ -14,10 +14,12 @@ def args_parser():
     args = parser.parse_args()
     if args.id:
         for image in spacex_request(idl=args.id):
-            saving_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]), extension_returner(image))
+            saving_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]),
+                       extension_returner(image))
     else:
         for image in spacex_request():
-            saving_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]), extension_returner(image))
+            saving_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]),
+                       extension_returner(image))
 
 
 def spacex_request(idl="6243ad8baf52800c6e919252"):
