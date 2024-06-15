@@ -13,31 +13,29 @@ def args_parser():
     )
     parser.add_argument("-d", "--date", help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
     args = parser.parse_args()
-    nasa_token = load_keys("NASE_KEY")
-    path = "images_nasa_APOD\\"
     if not args.date:
-        path = "images_nasa_APOD\\"
-        for image in nasa_planetary_requests(nasa_token):
+        for image in nasa_requests(load_keys("NASE_KEY")):
             try:
-                print(os.path.splitext(os.path.split((urlparse(image["hdurl"])).path)[1])[0])
-                print(os.path.split((urlparse(image["hdurl"])).path)[1])
                 saving_img(image["hdurl"], os.path.splitext(os.path.split((urlparse(image["hdurl"])).path)[1])[0],
-                              extension_returner(image["hdurl"]), path)
+                           extension_returner(image["hdurl"]), "images\\")
             except KeyError:
-                saving_img(image["url"], os.path.splitext(os.path.split((urlparse(image["url"])).path)[1])[0],
-                              extension_returner(image["url"]), path)
+                if urlparse(image["url"]).netloc == "www.youtube.com":
+                    continue
+                else:
+                    saving_img(image["url"], os.path.splitext(os.path.split((urlparse(image["url"])).path)[1])[0],
+                               extension_returner(image["url"]), "images\\")
     else:
         try:
-            image = nasa_planetary_requests(nasa_token, date=args.date)['hdurl']
+            image = nasa_requests(load_keys("NASE_KEY"), date=args.date)['hdurl']
             saving_img(image, os.path.splitext(os.path.split((urlparse(image)).path)[1])[0],
-                       extension_returner(image), path)
+                       extension_returner(image), "images\\")
         except KeyError:
-            image = nasa_planetary_requests(nasa_token, date=args.date)['hdurl']
+            image = nasa_requests(load_keys("NASE_KEY"), date=args.date)['url']
             saving_img(image, os.path.splitext(os.path.split((urlparse(image)).path)[1])[0],
-                              extension_returner(image), path)
+                       extension_returner(image), "images\\")
 
 
-def nasa_planetary_requests(token, date=None):
+def nasa_requests(token, date=None):
     url = "https://api.nasa.gov/planetary/apod"
     if not date:
         payload = {

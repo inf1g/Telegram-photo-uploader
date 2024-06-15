@@ -1,7 +1,8 @@
 import requests
 import argparse
+from urllib.parse import urlparse
 from images_saver import saving_img
-from file_extension import extension_checking
+from file_extension import extension_returner
 
 
 def args_parser():
@@ -10,12 +11,14 @@ def args_parser():
     )
     parser.add_argument("-id", help="Загрузит фото от SpaceX по указанному ID запуска")
     args = parser.parse_args()
-    if args.id:
-        for image_name, image_url in enumerate(spacex_request(idl=args.id)):
-            saving_img(image_url, image_name, extension_checking(image_url))
-    else:
-        for image_name, image_url in enumerate(spacex_request()):
-            saving_img(image_url, image_name, extension_checking(image_url))
+    parse = spacex_request()
+    print(spacex_request())
+    # if args.id:
+    #     for image_name, image_url in enumerate(spacex_request(idl=args.id)):
+    #         saving_img(image_url, image_name, extension_returner(image_url))
+    # else:
+    #     for image_name, image_url in enumerate(spacex_request()):
+    #         saving_img(image_url, image_name, extension_returner(image_url))
 
 
 def spacex_request(idl="6243ad8baf52800c6e919252"):

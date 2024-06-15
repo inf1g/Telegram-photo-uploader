@@ -24,7 +24,7 @@ def saving_img(url, filename, image_format="jpeg", path="images\\", payload=()):
     os.makedirs(f"{script_dir}\\{path}\\", exist_ok=True)
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    with open(f"{script_dir}\\{path}\\{filename}.{image_format}", 'wb') as file:
+    with open(f"{script_dir}\\{path}\\{filename}{image_format}", 'wb') as file:
         file.write(response.content)
 
 
