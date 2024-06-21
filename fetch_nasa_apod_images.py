@@ -11,31 +11,38 @@ def args_parser():
     parser = argparse.ArgumentParser(
         description='Скрипт загружает и сохраняет Последние APOD-фото от NASA'
     )
-    parser.add_argument("-d", "--date", help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
+    parser.add_argument("-da", default=None,
+                        help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
     args = parser.parse_args()
-    if not args.date:
-        for image in nasa_requests(load_keys("NASE_KEY")):
+    image_response = nasa_requests(load_keys("NASE_KEY"), date=args.da)
+    if isinstance(image_response, list):
+        for image in image_response:
             try:
-                saving_img(image["hdurl"], os.path.splitext(os.path.split((urlparse(image["hdurl"])).path)[1])[0],
-                           extension_returner(image["hdurl"]), "images\\")
+                saving_img(image['hdurl'], os.path.splitext(os.path.split((urlparse(image['hdurl'])).path)[1])[0],
+                           extension_returner(image['hdurl']), "images\\")
             except KeyError:
-                if urlparse(image["url"]).netloc == "www.youtube.com":
-                    continue
+                youtube_check = urlparse(image['url'])
+                if youtube_check.netloc == 'www.youtube.com':
+                    pass
                 else:
-                    saving_img(image["url"], os.path.splitext(os.path.split((urlparse(image["url"])).path)[1])[0],
-                               extension_returner(image["url"]), "images\\")
+                    saving_img(image['url'], os.path.splitext(os.path.split((urlparse(image['url'])).path)[1])[0],
+                               extension_returner(image['url']), "images\\")
     else:
         try:
-            image = nasa_requests(load_keys("NASE_KEY"), date=args.date)['hdurl']
-            saving_img(image, os.path.splitext(os.path.split((urlparse(image)).path)[1])[0],
-                       extension_returner(image), "images\\")
+            saving_img(image_response['hdurl'],
+                       os.path.splitext(os.path.split((urlparse(image_response['hdurl'])).path)[1])[0],
+                       extension_returner(image_response['hdurl']), "images\\")
         except KeyError:
-            image = nasa_requests(load_keys("NASE_KEY"), date=args.date)['url']
-            saving_img(image, os.path.splitext(os.path.split((urlparse(image)).path)[1])[0],
-                       extension_returner(image), "images\\")
+            youtube_check = urlparse(image_response['url'])
+            if youtube_check.netloc == 'www.youtube.com':
+                pass
+            else:
+                saving_img(image_response['url'],
+                           os.path.splitext(os.path.split((urlparse(image_response['url'])).path)[1])[0],
+                           extension_returner(image_response['url']), "images\\")
 
 
-def nasa_requests(token, date=None):
+def nasa_requests(token, date):
     url = "https://api.nasa.gov/planetary/apod"
     if not date:
         payload = {

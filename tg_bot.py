@@ -1,17 +1,48 @@
+import os
+import random
 import telegram
+import time
+import argparse
 from configure_keys import load_keys
 
 
-def tg_bot():
-    bot = telegram.Bot(token=load_keys("TG_KEY"))
-    print(bot.get_me())
-    # bot.send_message(text='Hi!', chat_id="@tg_test_bots_ch")
-    bot.send_photo(chat_id="@tg_test_bots_ch", photo=open('images/0.jpg', 'rb'))
-    bot.get_updates()
+def args_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", default="4", help="Задаёт время в часах между публикациями" 
+                                                " в Telegram канале. По умолчанию составляет 4 часа")
+    parser.add_argument("-p", default=None,
+                        help="Публикует указанную фотографию в канал")
+    args = parser.parse_args()
+    if args.p:
+        publishing_selected_photo(file_name=args.p)
+        publishing_random_photo(timer(time_s=int(args.t)))
+    else:
+        publishing_random_photo(timer(time_s=int(args.t)))
+
+
+def timer(time_s=4):
+    return 3600 * time_s
+
+
+def publishing_selected_photo(file_name):
+    for root, dirs, files in os.walk("images"):
+        for file in files:
+            if file_name.lower() in os.path.splitext(file)[0].lower():
+                file_path = os.path.join(file)
+                bot = telegram.Bot(token=load_keys("TG_KEY"))
+                bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=open(f'images/{file_path}', 'rb'))
+
+
+def publishing_random_photo(time_sleep):
+    while True:
+        bot = telegram.Bot(token=load_keys("TG_KEY"))
+        random_image = random.choice(os.listdir("images"))
+        bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=open(f'images/{random_image}', 'rb'))
+        time.sleep(time_sleep)
 
 
 def main():
-    tg_bot()
+    args_parser()
 
 
 if __name__ == "__main__":

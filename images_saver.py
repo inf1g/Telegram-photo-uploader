@@ -9,10 +9,10 @@ def args_parser():
     )
     parser.add_argument("-u", "--url", required=True,
                         help="Url адресс откуда скачивать изображение")
-    parser.add_argument("-f", "--filename", type=str, required=True,
+    parser.add_argument("-f", "--filename", required=True,
                         help="Название файла для изображения")
-    parser.add_argument("-if", "--img_format", help="Название файла для изображения")
-    parser.add_argument("-p", "--path", type=str, help="название папки куда сохраняются изображения")
+    parser.add_argument("-if", "--img_format", help="Формат файла для изображения. Пример: .format")
+    parser.add_argument("-p", "--path", help="Название папки куда сохраняются изображения")
     parser.add_argument("-pl", "--payload", help="params для url адреса в GET запросе")
     args = parser.parse_args()
     saving_img(args.url, args.filename, args.img_format, args.path, args.payload)
