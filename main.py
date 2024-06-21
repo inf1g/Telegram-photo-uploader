@@ -36,7 +36,6 @@ def args_parser():
         subprocess.call(['python', 'tg_bot.py'])
 
 
-
 def main():
     args_parser()
 
