@@ -99,7 +99,7 @@ python fetch_spacex_images.py -id 6243ad8baf52800c6e919252
 python tg_bot.py -p epic_1b_20240611134201
 ```
 ---
-### Все скаченные фото хранятся в папке `images`
+### Все фото хранятся в папке `images`
 
 ## Создано с помощью 
 
