@@ -7,6 +7,26 @@ from images_saver import save_img
 from file_extension import extension_returner
 
 
+def check_url(json):
+    try:
+        img_url = json['hdurl']
+        save_img(img_url,
+                 os.path.splitext(os.path.split((urlparse(img_url)).path)[1])[0],
+                 extension_returner(img_url), "images")
+    except KeyError:
+        try:
+            img_url = json['url']
+            youtube_check = urlparse(img_url)
+            if youtube_check.netloc == 'www.youtube.com':
+                pass
+            else:
+                save_img(img_url,
+                         os.path.splitext(os.path.split((urlparse(img_url)).path)[1])[0],
+                         extension_returner(img_url), "images")
+        except KeyError:
+            pass
+
+
 def args_parser():
     parser = argparse.ArgumentParser(
         description='Скрипт загружает и сохраняет Последние APOD-фото от NASA'
@@ -17,29 +37,9 @@ def args_parser():
     image_response = request_nasa(load_keys("NASE_KEY"), date=args.da)
     if isinstance(image_response, list):
         for image in image_response:
-            try:
-                save_img(image['hdurl'], os.path.splitext(os.path.split((urlparse(image['hdurl'])).path)[1])[0],
-                           extension_returner(image['hdurl']), "images")
-            except KeyError:
-                youtube_check = urlparse(image['url'])
-                if youtube_check.netloc == 'www.youtube.com':
-                    pass
-                else:
-                    save_img(image['url'], os.path.splitext(os.path.split((urlparse(image['url'])).path)[1])[0],
-                               extension_returner(image['url']), "images")
+            check_url(image)
     else:
-        try:
-            save_img(image_response['hdurl'],
-                       os.path.splitext(os.path.split((urlparse(image_response['hdurl'])).path)[1])[0],
-                       extension_returner(image_response['hdurl']), "images")
-        except KeyError:
-            youtube_check = urlparse(image_response['url'])
-            if youtube_check.netloc == 'www.youtube.com':
-                pass
-            else:
-                save_img(image_response['url'],
-                           os.path.splitext(os.path.split((urlparse(image_response['url'])).path)[1])[0],
-                           extension_returner(image_response['url']), "images")
+        check_url(image_response)
 
 
 def request_nasa(token, date):
