@@ -26,8 +26,7 @@ def timer(time_s=4):
 
 
 def publishing_selected_photo(file_name):
-    search_dir = Path("images")
-    for path in search_dir.rglob(file_name + ".*"):
+    for path in Path("images").rglob(file_name + ".*"):
         if path.stem == file_name:
             bot = telegram.Bot(token=load_keys("TG_KEY"))
             with open(f'{path.resolve()}', 'rb') as photo:
