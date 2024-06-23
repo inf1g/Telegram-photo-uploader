@@ -15,10 +15,10 @@ def args_parser():
     parser.add_argument("-p", "--path", help="Название папки куда сохраняются изображения")
     parser.add_argument("-pl", "--payload", help="params для url адреса в GET запросе")
     args = parser.parse_args()
-    saving_img(args.url, args.filename, args.img_format, args.path, args.payload)
+    save_img(args.url, args.filename, args.img_format, args.path, args.payload)
 
 
-def saving_img(url, filename, image_format="jpeg", path="images\\", payload=()):
+def save_img(url, filename, image_format="jpeg", path="images\\", payload=()):
     file_path = os.path.realpath(__file__)
     script_dir = os.path.dirname(file_path)
     os.makedirs(f"{script_dir}\\{path}\\", exist_ok=True)

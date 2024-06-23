@@ -1,7 +1,7 @@
 import requests
 import argparse
 from configure_keys import load_keys
-from images_saver import saving_img
+from images_saver import save_img
 
 
 def args_parser():
@@ -12,14 +12,14 @@ def args_parser():
                         help="Загрузит EPIC-фото от NASA за указаный день в формате 2024-06-15")
     args = parser.parse_args()
     payload = {"api_key": load_keys("NASE_KEY")}
-    for image in nasa_requests(load_keys("NASE_KEY"), date=args.d):
+    for image in request_nasa(load_keys("NASE_KEY"), date=args.d):
         date = (image["date"].split(" ")[0])
         year, month, day = date.split("-")
         url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{image["image"]}.png"
-        saving_img(url, image["image"], ".png", "images\\", payload)
+        save_img(url, image["image"], ".png", "images\\", payload)
 
 
-def nasa_requests(token, date=None):
+def request_nasa(token, date=None):
     if date:
         url = f"https://api.nasa.gov/EPIC/api/natural/date/{date}"
 

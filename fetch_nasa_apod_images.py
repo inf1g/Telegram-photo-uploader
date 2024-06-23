@@ -3,7 +3,7 @@ import argparse
 import os
 from urllib.parse import urlparse
 from configure_keys import load_keys
-from images_saver import saving_img
+from images_saver import save_img
 from file_extension import extension_returner
 
 
@@ -14,22 +14,22 @@ def args_parser():
     parser.add_argument("-da", default=None,
                         help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
     args = parser.parse_args()
-    image_response = nasa_requests(load_keys("NASE_KEY"), date=args.da)
+    image_response = request_nasa(load_keys("NASE_KEY"), date=args.da)
     if isinstance(image_response, list):
         for image in image_response:
             try:
-                saving_img(image['hdurl'], os.path.splitext(os.path.split((urlparse(image['hdurl'])).path)[1])[0],
+                save_img(image['hdurl'], os.path.splitext(os.path.split((urlparse(image['hdurl'])).path)[1])[0],
                            extension_returner(image['hdurl']), "images\\")
             except KeyError:
                 youtube_check = urlparse(image['url'])
                 if youtube_check.netloc == 'www.youtube.com':
                     pass
                 else:
-                    saving_img(image['url'], os.path.splitext(os.path.split((urlparse(image['url'])).path)[1])[0],
+                    save_img(image['url'], os.path.splitext(os.path.split((urlparse(image['url'])).path)[1])[0],
                                extension_returner(image['url']), "images\\")
     else:
         try:
-            saving_img(image_response['hdurl'],
+            save_img(image_response['hdurl'],
                        os.path.splitext(os.path.split((urlparse(image_response['hdurl'])).path)[1])[0],
                        extension_returner(image_response['hdurl']), "images\\")
         except KeyError:
@@ -37,12 +37,12 @@ def args_parser():
             if youtube_check.netloc == 'www.youtube.com':
                 pass
             else:
-                saving_img(image_response['url'],
+                save_img(image_response['url'],
                            os.path.splitext(os.path.split((urlparse(image_response['url'])).path)[1])[0],
                            extension_returner(image_response['url']), "images\\")
 
 
-def nasa_requests(token, date):
+def request_nasa(token, date):
     url = "https://api.nasa.gov/planetary/apod"
     if not date:
         payload = {
