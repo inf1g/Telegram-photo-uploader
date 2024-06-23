@@ -16,7 +16,7 @@ def args_parser():
         date = (image["date"].split(" ")[0])
         year, month, day = date.split("-")
         url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{image["image"]}.png"
-        save_img(url, image["image"], ".png", "images\\", payload)
+        save_img(url, image["image"], ".png", "images", payload)
 
 
 def request_nasa(token, date=None):

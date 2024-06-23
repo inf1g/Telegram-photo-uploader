@@ -19,19 +19,19 @@ def args_parser():
         for image in image_response:
             try:
                 save_img(image['hdurl'], os.path.splitext(os.path.split((urlparse(image['hdurl'])).path)[1])[0],
-                           extension_returner(image['hdurl']), "images\\")
+                           extension_returner(image['hdurl']), "images")
             except KeyError:
                 youtube_check = urlparse(image['url'])
                 if youtube_check.netloc == 'www.youtube.com':
                     pass
                 else:
                     save_img(image['url'], os.path.splitext(os.path.split((urlparse(image['url'])).path)[1])[0],
-                               extension_returner(image['url']), "images\\")
+                               extension_returner(image['url']), "images")
     else:
         try:
             save_img(image_response['hdurl'],
                        os.path.splitext(os.path.split((urlparse(image_response['hdurl'])).path)[1])[0],
-                       extension_returner(image_response['hdurl']), "images\\")
+                       extension_returner(image_response['hdurl']), "images")
         except KeyError:
             youtube_check = urlparse(image_response['url'])
             if youtube_check.netloc == 'www.youtube.com':
@@ -39,7 +39,7 @@ def args_parser():
             else:
                 save_img(image_response['url'],
                            os.path.splitext(os.path.split((urlparse(image_response['url'])).path)[1])[0],
-                           extension_returner(image_response['url']), "images\\")
+                           extension_returner(image_response['url']), "images")
 
 
 def request_nasa(token, date):
