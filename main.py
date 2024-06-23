@@ -28,7 +28,7 @@ def check_args(args):
     if args.pa:
         fetch_spacex_images_args.extend(['-pa', args.pa])
     subprocess.run(['python', 'fetch_spacex_images.py'] + fetch_spacex_images_args)
-    if not args.id and not args.pa:
+    if not any([args.id, args.pa]):
         subprocess.call(['python', 'fetch_spacex_images.py'])
     fetch_nasa_epic_images_args = []
     if args.d:
@@ -36,7 +36,7 @@ def check_args(args):
     if args.pa:
         fetch_nasa_epic_images_args.extend(['-pa', args.pa])
     subprocess.run(['python', 'fetch_nasa_epic_images.py'] + fetch_nasa_epic_images_args)
-    if not args.d and not args.pa:
+    if not any([args.d, args.pa]):
         subprocess.call(['python', 'fetch_nasa_epic_images.py'])
     fetch_nasa_apod_images_args = []
     if args.da:
@@ -46,7 +46,7 @@ def check_args(args):
     if args.am:
         fetch_nasa_apod_images_args.extend(['-am', args.am])
     subprocess.run(['python', 'fetch_nasa_apod_images.py'] + fetch_nasa_apod_images_args)
-    if not args.da and not args.pa and not args.am:
+    if not any([args.da, args.pa, args.am]):
         subprocess.call(['python', 'fetch_nasa_apod_images.py'])
     publishing_to_tg_args = []
     if args.t:
@@ -56,7 +56,7 @@ def check_args(args):
     if args.pa:
         publishing_to_tg_args.extend(['-pa', args.pa])
     subprocess.call(['python', 'publishing_to_tg.py'] + publishing_to_tg_args)
-    if not args.p and not args.pa and not args.t:
+    if not any([args.p, args.pa, args.t]):
         subprocess.call(['python', 'publishing_to_tg.py'])
 
 
