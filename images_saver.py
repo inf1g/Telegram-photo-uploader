@@ -11,25 +11,31 @@ def args_parser():
                         help="Url адрес откуда скачивать изображение")
     parser.add_argument("-f", "--filename", required=True,
                         help="Название файла для изображения")
-    parser.add_argument("-if", "--img_format", help="Формат файла для изображения. Пример: .format")
-    parser.add_argument("-p", "--path", help="Название папки куда сохраняются изображения")
+    parser.add_argument("-if", "--img_format", default="jpeg",
+                        help="Формат файла для изображения. Пример: .format")
+    parser.add_argument("-pa", default="images",
+                        help="Путь к папке куда сохраняются изображения")
     parser.add_argument("-pl", "--payload", help="params для url адреса в GET запросе")
-    args = parser.parse_args()
-    save_img(args.url, args.filename, args.img_format, args.path, args.payload)
+    return parser.parse_args()
 
 
 def save_img(url, filename, image_format="jpeg", path="images", payload=()):
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    full_path = os.path.join(script_dir, path, f"{filename}.{image_format}")
-    os.makedirs(os.path.dirname(full_path), exist_ok=True)
+    if path == "images":
+        full_path = os.path.join(script_dir, path, f"{filename}")
+    else:
+        full_path = os.path.join(path, f"{filename}")
+
+    os.makedirs(path, exist_ok=True)
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    with open(full_path, 'wb') as file:
+    with open(f"{full_path}{image_format}", 'wb') as file:
         file.write(response.content)
 
 
 def main():
-    args_parser()
+    args = args_parser()
+    save_img(args.url, args.filename, args.img_format, args.pa, args.payload)
 
 
 if __name__ == '__main__':

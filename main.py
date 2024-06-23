@@ -12,31 +12,51 @@ def args_parser():
                         help="Загрузит EPIC-фото от NASA за указаный день в формате 2024-06-15")
     parser.add_argument("-da", default=None,
                         help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
-    parser.add_argument("-p", default="51981688502_0584ac5658_o", help="Публикует указанную фотографию в канал")
+    parser.add_argument("-p", default="51981688502_0584ac5658_o",
+                        help="Публикует указанную фотографию в канал")
+    parser.add_argument("-pa", help="Путь к папке куда сохраняются изображения")
+    parser.add_argument("-am", default="30",
+                        help="Количество скачиваемый фото до 50 шт.")
     args = parser.parse_args()
     return args
 
 
 def check_args(args):
+    fetch_spacex_images_args = []
     if args.id:
-        subprocess.call(['python', 'fetch_spacex_images.py', '-id', args.id])
-    if not args.id:
+        fetch_spacex_images_args.extend(['-id', args.id])
+    if args.pa:
+        fetch_spacex_images_args.extend(['-pa', args.pa])
+    subprocess.run(['python', 'fetch_spacex_images.py'] + fetch_spacex_images_args)
+    if not args.id and not args.pa:
         subprocess.call(['python', 'fetch_spacex_images.py'])
+    fetch_nasa_epic_images_args = []
     if args.d:
-        subprocess.call(['python', 'fetch_nasa_epic_images.py', '-d', args.d])
-    if not args.d:
+        fetch_nasa_epic_images_args.extend(['-d', args.d])
+    if args.pa:
+        fetch_nasa_epic_images_args.extend(['-pa', args.pa])
+    subprocess.run(['python', 'fetch_nasa_epic_images.py'] + fetch_nasa_epic_images_args)
+    if not args.d and not args.pa:
         subprocess.call(['python', 'fetch_nasa_epic_images.py'])
+    fetch_nasa_apod_images_args = []
     if args.da:
-        subprocess.call(['python', 'fetch_nasa_apod_images.py', '-da', args.da])
-    if not args.da:
+        fetch_nasa_apod_images_args.extend(['-da', args.da])
+    if args.pa:
+        fetch_nasa_apod_images_args.extend(['-pa', args.pa])
+    if args.am:
+        fetch_nasa_apod_images_args.extend(['-am', args.am])
+    subprocess.run(['python', 'fetch_nasa_apod_images.py'] + fetch_nasa_apod_images_args)
+    if not args.da and not args.pa and not args.am:
         subprocess.call(['python', 'fetch_nasa_apod_images.py'])
+    publishing_to_tg_args = []
     if args.t:
-        subprocess.call(['python', 'publishing_to_tg.py', '-t', args.t])
-    if not args.t:
-        subprocess.call(['python', 'publishing_to_tg.py'])
+        publishing_to_tg_args.extend(['-t', args.t])
     if args.p:
-        subprocess.call(['python', 'publishing_to_tg.py', '-p', args.p])
-    if not args.p:
+        publishing_to_tg_args.extend(['-p', args.p])
+    if args.pa:
+        publishing_to_tg_args.extend(['-pa', args.pa])
+    subprocess.call(['python', 'publishing_to_tg.py'] + publishing_to_tg_args)
+    if not args.p and not args.pa and not args.t:
         subprocess.call(['python', 'publishing_to_tg.py'])
 
 

@@ -10,8 +10,9 @@ def args_parser():
     parser = argparse.ArgumentParser(description='Скрипт загружает и сохраняет фото от SpaceX')
     parser.add_argument("-id", default="6243ad8baf52800c6e919252",
                         help="Загрузит фото от SpaceX по-указанному ID запуска")
-    args = parser.parse_args()
-    return args
+    parser.add_argument("-pa", default="images",
+                        help="Путь к папке куда сохраняются изображения")
+    return parser.parse_args()
 
 
 def request_spacex(launch_id):
@@ -24,7 +25,7 @@ def main():
     args = args_parser()
     for image in request_spacex(launch_id=args.id):
         save_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]),
-                 extension_returner(image))
+                 extension_returner(image), path=args.pa)
 
 
 if __name__ == '__main__':

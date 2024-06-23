@@ -13,16 +13,19 @@ def args_parser():
     )
     parser.add_argument("-da", default=None,
                         help="Загрузит APOD-фото от NASA за указанный день в формате 2024-06-15")
-    args = parser.parse_args()
-    return args
+    parser.add_argument("-pa", default="images",
+                        help="Путь к папке куда сохраняются изображения.")
+    parser.add_argument("-am", default="30",
+                        help="Количество скачиваемый фото до 50 шт.")
+    return parser.parse_args()
 
 
-def request_nasa(token, date):
+def request_nasa(token, date, amount):
     url = "https://api.nasa.gov/planetary/apod"
     if not date:
         payload = {
             "api_key": token,
-            "count": "30"
+            "count": amount
         }
     else:
         payload = {
@@ -34,34 +37,24 @@ def request_nasa(token, date):
     return response.json()
 
 
-def check_url(json):
+def check_url(json, path):
     try:
         img_url = json['hdurl']
         save_img(img_url,
                  os.path.splitext(os.path.split((urlparse(img_url)).path)[1])[0],
-                 extension_returner(img_url), "images")
+                 extension_returner(img_url), path)
     except KeyError:
-        try:
-            img_url = json['url']
-            youtube_check = urlparse(img_url)
-            if youtube_check.netloc == 'www.youtube.com':
-                pass
-            else:
-                save_img(img_url,
-                         os.path.splitext(os.path.split((urlparse(img_url)).path)[1])[0],
-                         extension_returner(img_url), "images")
-        except KeyError:
-            pass
+        pass
 
 
 def main():
     args = args_parser()
-    image_response = request_nasa(load_keys("NASE_KEY"), date=args.da)
+    image_response = request_nasa(load_keys("NASE_KEY"), date=args.da, amount=args.am)
     if isinstance(image_response, list):
         for image in image_response:
-            check_url(image)
+            check_url(image, path=args.pa)
     else:
-        check_url(image_response)
+        check_url(image_response, args.pa)
 
 
 if __name__ == '__main__':
