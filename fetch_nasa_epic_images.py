@@ -9,7 +9,7 @@ def args_parser():
         description='Скрипт загружает и сохраняет Последние EPIC-фото от NASA'
     )
     parser.add_argument("-d", default=None,
-                        help="Загрузит EPIC-фото от NASA за указаный день в формате 2024-06-15")
+                        help="Загрузит EPIC-фото от NASA за указанный день в формате 2024-06-15")
     args = parser.parse_args()
     return args
 

@@ -8,7 +8,7 @@ def args_parser():
         description='Скрипт сохраняет изображения'
     )
     parser.add_argument("-u", "--url", required=True,
-                        help="Url адресс откуда скачивать изображение")
+                        help="Url адрес откуда скачивать изображение")
     parser.add_argument("-f", "--filename", required=True,
                         help="Название файла для изображения")
     parser.add_argument("-if", "--img_format", help="Формат файла для изображения. Пример: .format")

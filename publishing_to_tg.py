@@ -9,16 +9,16 @@ from configure_keys import load_keys
 
 def args_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", default="4", help="Задаёт время в часах между публикациями" 
-                                                " в Telegram канале. По умолчанию составляет 4 часа")
+    parser.add_argument("-t", default="4", type=int, help="Задаёт время в часах между публикациями"
+                                                          " в Telegram канале. По умолчанию составляет 4 часа")
     parser.add_argument("-p", default=None,
                         help="Публикует указанную фотографию в канал")
     args = parser.parse_args()
     if args.p:
         publishing_selected_photo(file_name=args.p)
-        publishing_random_photo(timer(time_s=int(args.t)))
+        publishing_random_photo(timer(time_s=args.t))
     else:
-        publishing_random_photo(timer(time_s=int(args.t)))
+        publishing_random_photo(timer(time_s=args.t))
 
 
 def timer(time_s=4):
