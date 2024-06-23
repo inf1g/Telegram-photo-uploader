@@ -34,12 +34,7 @@ def args_parser():
     parser.add_argument("-da", default=None,
                         help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
     args = parser.parse_args()
-    image_response = request_nasa(load_keys("NASE_KEY"), date=args.da)
-    if isinstance(image_response, list):
-        for image in image_response:
-            check_url(image)
-    else:
-        check_url(image_response)
+    return args
 
 
 def request_nasa(token, date):
@@ -60,7 +55,13 @@ def request_nasa(token, date):
 
 
 def main():
-    args_parser()
+    args = args_parser()
+    image_response = request_nasa(load_keys("NASE_KEY"), date=args.da)
+    if isinstance(image_response, list):
+        for image in image_response:
+            check_url(image)
+    else:
+        check_url(image_response)
 
 
 if __name__ == '__main__':

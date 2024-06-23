@@ -11,9 +11,7 @@ def args_parser():
     parser.add_argument("-id", default="6243ad8baf52800c6e919252",
                         help="Загрузит фото от SpaceX по-указанному ID запуска")
     args = parser.parse_args()
-    for image in request_spacex(launch_id=args.id):
-        save_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]),
-                   extension_returner(image))
+    return args
 
 
 def request_spacex(launch_id):
@@ -23,7 +21,10 @@ def request_spacex(launch_id):
 
 
 def main():
-    args_parser()
+    args = args_parser()
+    for image in request_spacex(launch_id=args.id):
+        save_img(image, (os.path.splitext(os.path.split((urlparse(image)).path)[1])[0]),
+                 extension_returner(image))
 
 
 if __name__ == '__main__':
