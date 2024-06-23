@@ -3,6 +3,7 @@ import random
 import telegram
 import time
 import argparse
+from pathlib import Path
 from configure_keys import load_keys
 
 
@@ -25,21 +26,20 @@ def timer(time_s=4):
 
 
 def publishing_selected_photo(file_name):
-    for root, dirs, files in os.walk("images"):
-        for file in files:
-            if file_name.lower() in os.path.splitext(file)[0].lower():
-                file_path = os.path.join(file)
-                bot = telegram.Bot(token=load_keys("TG_KEY"))
-                with open(f'images/{file_path}', 'rb') as photo:
-                    photo_data = photo.read()
-                    bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=photo_data)
+    search_dir = Path("images")
+    for path in search_dir.rglob(file_name + ".*"):
+        if path.stem == file_name:
+            bot = telegram.Bot(token=load_keys("TG_KEY"))
+            with open(f'{path.resolve()}', 'rb') as photo:
+                photo_data = photo.read()
+                bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=photo_data)
 
 
 def publishing_random_photo(time_sleep):
     while True:
         bot = telegram.Bot(token=load_keys("TG_KEY"))
-        random_image = random.choice(os.listdir("images"))
-        with open(f'images/{random_image}', 'rb') as photo:
+        image_path = os.path.join("images", random.choice(os.listdir("images")))
+        with open(image_path, 'rb') as photo:
             photo_data = photo.read()
         bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=photo_data)
         time.sleep(time_sleep)
