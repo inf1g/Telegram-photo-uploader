@@ -14,6 +14,10 @@ def args_parser():
                         help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
     parser.add_argument("-p", default="51981688502_0584ac5658_o", help="Публикует указанную фотографию в канал")
     args = parser.parse_args()
+    return args
+
+
+def check_args(args):
     if args.id:
         subprocess.call(['python', 'fetch_spacex_images.py', '-id', args.id])
     if not args.id:
@@ -37,7 +41,7 @@ def args_parser():
 
 
 def main():
-    args_parser()
+    check_args(args_parser())
 
 
 if __name__ == "__main__":
