@@ -27,13 +27,13 @@ def args_parser():
     if not args.da:
         subprocess.call(['python', 'fetch_nasa_apod_images.py'])
     if args.t:
-        subprocess.call(['python', 'tg_bot.py', '-t', args.t])
+        subprocess.call(['python', 'publishing_to_tg.py', '-t', args.t])
     if not args.t:
-        subprocess.call(['python', 'tg_bot.py'])
+        subprocess.call(['python', 'publishing_to_tg.py'])
     if args.p:
-        subprocess.call(['python', 'tg_bot.py', '-p', args.p])
+        subprocess.call(['python', 'publishing_to_tg.py', '-p', args.p])
     if not args.p:
-        subprocess.call(['python', 'tg_bot.py'])
+        subprocess.call(['python', 'publishing_to_tg.py'])
 
 
 def main():

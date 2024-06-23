@@ -96,7 +96,7 @@ python fetch_spacex_images.py -id 6243ad8baf52800c6e919252
 
 - ` -p ` Где ` epic_1b_20240611134201`  - это название фото из папки ` image`.
 ```bash
-python tg_bot.py -p epic_1b_20240611134201
+python publishing_to_tg.py -p epic_1b_20240611134201
 ```
 ---
 ### Все фото хранятся в папке `images`
