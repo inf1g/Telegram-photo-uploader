@@ -30,14 +30,18 @@ def publishing_selected_photo(file_name):
             if file_name.lower() in os.path.splitext(file)[0].lower():
                 file_path = os.path.join(file)
                 bot = telegram.Bot(token=load_keys("TG_KEY"))
-                bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=open(f'images/{file_path}', 'rb'))
+                with open(f'images/{file_path}', 'rb') as photo:
+                    photo_data = photo.read()
+                    bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=photo_data)
 
 
 def publishing_random_photo(time_sleep):
     while True:
         bot = telegram.Bot(token=load_keys("TG_KEY"))
         random_image = random.choice(os.listdir("images"))
-        bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=open(f'images/{random_image}', 'rb'))
+        with open(f'images/{random_image}', 'rb') as photo:
+            photo_data = photo.read()
+        bot.send_photo(chat_id=load_keys("TG_CHANNEL"), photo=photo_data)
         time.sleep(time_sleep)
 
 
