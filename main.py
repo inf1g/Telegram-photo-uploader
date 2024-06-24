@@ -9,9 +9,9 @@ def args_parser():
     parser.add_argument("-id", default="6243ad8baf52800c6e919252",
                         help="Загрузит фото от SpaceX по-указанному ID запуска")
     parser.add_argument("-d", default=None,
-                        help="Загрузит EPIC-фото от NASA за указаный день в формате 2024-06-15")
+                        help="Загрузит EPIC-фото от NASA за указанный день в формате 2024-06-15")
     parser.add_argument("-da", default=None,
-                        help="Загрузит APOD-фото от NASA за указаный день в формате 2024-06-15")
+                        help="Загрузит APOD-фото от NASA за указанный день в формате 2024-06-15")
     parser.add_argument("-p", help="Публикует указанную фотографию в канал")
     parser.add_argument("-pa", help="Путь к папке куда сохраняются изображения")
     parser.add_argument("-am", default="30",
