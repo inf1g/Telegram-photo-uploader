@@ -1,10 +1,10 @@
-import requests
 import argparse
 import os
 from urllib.parse import urlparse
 from configure_keys import load_keys
 from images_saver import save_img
 from file_extension import extension_returner
+from connection_errors import secure_request
 
 
 def args_parser():
@@ -16,7 +16,7 @@ def args_parser():
     parser.add_argument("-pa", default="images",
                         help="Путь к папке куда сохраняются изображения.")
     parser.add_argument("-am", default="30",
-                        help="Количество скачиваемый фото до 50 шт.")
+                        help="Количество скачиваемых фото до 50 шт.")
     return parser.parse_args()
 
 
@@ -32,7 +32,7 @@ def request_nasa(token, date, amount):
             "api_key": token,
             "date": {date}
         }
-    response = requests.get(url, params=payload)
+    response = secure_request(url, params=payload)
     response.raise_for_status()
     return response.json()
 

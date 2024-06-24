@@ -1,9 +1,9 @@
-import requests
 import argparse
 import os
 from urllib.parse import urlparse
 from images_saver import save_img
 from file_extension import extension_returner
+from connection_errors import secure_request
 
 
 def args_parser():
@@ -16,7 +16,7 @@ def args_parser():
 
 
 def request_spacex(launch_id):
-    response = requests.get(f"https://api.spacexdata.com/v5/launches/{launch_id}")
+    response = secure_request(f"https://api.spacexdata.com/v5/launches/{launch_id}")
     response.raise_for_status()
     return response.json()['links']['flickr']['original']
 

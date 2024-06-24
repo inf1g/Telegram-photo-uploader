@@ -54,7 +54,7 @@ python main.py
 ```bash
 python main.py -t 4
 ```
-- ` -p ` Где ` epic_1b_20240611134201`  - это название фото из папки ` image`.
+- ` -p ` Где ` epic_1b_20240611134201`  - это название фото, по умолчанию из папки ` image`.
 ```bash
 python main.py -p epic_1b_20240611134201
 ```
@@ -70,6 +70,14 @@ python main.py -d 2024-06-15
 ```bash
 python main.py -da 2024-06-15
 ``` 
+- ` -pa ` Где `C:\space_images`  - Путь к папке откуда загружаются фото. Стандартно фото хранятся в папке `images`.
+```bash
+python main.py -pa C:\space_images
+```
+- ` -am ` Где `30`  - Количество скачиваемых фото до 50 шт.
+```bash
+python main.py -am 30
+```
 
 ## Параметры запуска отдельных скриптов.
 
@@ -79,10 +87,22 @@ python main.py -da 2024-06-15
 ```bash
 python fetch_nasa_apod_images.py -da 2024-06-15
 ``` 
+- ` -am ` Количество скачиваемых фото до 50 шт.
+```bash
+python fetch_nasa_apod_images.py -am 30
+``` 
 - ` -d ` Загрузит EPIC-фото от NASA за указанный день в формате: год месяц день. Пример даты 2024-06-15.
 ```bash
 python fetch_nasa_epic_images.py -d 2024-06-15
 ``` 
+- ` -pa ` Где `C:\space_images`  - Путь к папке откуда загружаются фото. Стандартно фото хранятся в папке `images`
+```bash
+python fetch_nasa_epic_images.py -pa C:\space_images
+```
+или
+```bash
+python fetch_nasa_apod_images.py -pa C:\space_images
+```
 
 #### Для SpaceX
 
@@ -90,16 +110,31 @@ python fetch_nasa_epic_images.py -d 2024-06-15
 ```bash
 python fetch_spacex_images.py -id 6243ad8baf52800c6e919252
 ```
-- ` -p ` Где ` epic_1b_20240611134201`  - это название фото из папки ` image`.
+- ` -p ` Где `epic_1b_20240611134201`  - это название фото из папки ` image`.
+```bash
+python fetch_spacex_images.py -p epic_1b_20240611134201
+```
+- ` -pa ` Где `C:\space_images`  - Путь к папке откуда загружаются фото. Стандартно фото хранятся в папке `images`
+```bash
+python fetch_spacex_images.py -pa C:\space_images
+```
 
-#### Загрузка фото в Telegram канал по названию.
+#### Для Telegram 
+##### Загрузка в Telegram канал по названию фото.
 
 - ` -p ` Где ` epic_1b_20240611134201`  - это название фото из папки ` image`.
 ```bash
 python publishing_to_tg.py -p epic_1b_20240611134201
 ```
+- ` -t ` Где `4`  - Задаёт время в часах между публикациями в Telegram канале. По умолчанию составляет 4 часа.
+```bash
+python publishing_to_tg.py -t 4
+```
+- ` -pa ` Где `C:\space_images`  - Путь к папке откуда загружаются фото. Стандартно фото хранятся в папке `images`
+```bash
+python publishing_to_tg.py -pa C:\space_images
+```
 ---
-### Все фото хранятся в папке `images`
 
 ## Создано с помощью 
 

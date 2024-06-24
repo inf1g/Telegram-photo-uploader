@@ -1,7 +1,8 @@
-import requests
 import argparse
 from configure_keys import load_keys
 from images_saver import save_img
+from connection_errors import secure_request
+from datetime import datetime
 
 
 def args_parser():
@@ -21,13 +22,13 @@ def request_nasa(token, date=None):
         payload = {
             "api_key": token
         }
-        response = requests.get(url, params=payload)
+        response = secure_request(url, params=payload)
     else:
         url = "https://api.nasa.gov/EPIC/api/natural/images"
         payload = {
             "api_key": token
         }
-        response = requests.get(url, params=payload)
+        response = secure_request(url, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -36,8 +37,10 @@ def main():
     args = args_parser()
     payload = {"api_key": load_keys("NASE_KEY")}
     for image in request_nasa(load_keys("NASE_KEY"), date=args.d):
-        date = (image["date"].split(" ")[0])
-        year, month, day = date.split("-")
+        date = (image["date"])
+        year = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').strftime('%Y')
+        month = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').strftime('%m')
+        day = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').strftime('%d')
         url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{image["image"]}.png"
         save_img(url, image["image"], ".png", path=args.pa, payload=payload)
 

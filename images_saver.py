@@ -1,6 +1,6 @@
-import requests
 import os
 import argparse
+from connection_errors import secure_request
 
 
 def args_parser():
@@ -25,9 +25,8 @@ def save_img(url, filename, image_format="jpeg", path="images", payload=()):
         full_path = os.path.join(script_dir, path, f"{filename}")
     else:
         full_path = os.path.join(path, f"{filename}")
-
     os.makedirs(path, exist_ok=True)
-    response = requests.get(url, params=payload)
+    response = secure_request(url, params=payload)
     response.raise_for_status()
     with open(f"{full_path}{image_format}", 'wb') as file:
         file.write(response.content)
