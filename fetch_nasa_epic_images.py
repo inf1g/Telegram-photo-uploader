@@ -19,16 +19,12 @@ def args_parser():
 def request_nasa(token, date=None):
     if date:
         url = f"https://api.nasa.gov/EPIC/api/natural/date/{date}"
-        payload = {
-            "api_key": token
-        }
-        response = secure_request(url, params=payload)
     else:
         url = "https://api.nasa.gov/EPIC/api/natural/images"
-        payload = {
-            "api_key": token
-        }
-        response = secure_request(url, params=payload)
+    payload = {
+        "api_key": token
+    }
+    response = secure_request(url, params=payload)
     response.raise_for_status()
     return response.json()
 

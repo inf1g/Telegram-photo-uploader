@@ -55,7 +55,6 @@ def check_args(args):
     if args.pa:
         publishing_to_tg_args.extend(['-pa', args.pa])
     subprocess.call(['python', 'publishing_to_tg.py'] + publishing_to_tg_args)
-    print(publishing_to_tg_args)
     if not any([args.p, args.pa, args.t]):
         subprocess.call(['python', 'publishing_to_tg.py'])
 
