@@ -20,43 +20,26 @@ def args_parser():
     return args
 
 
+def run_subprocess(script_name, args_list):
+    if args_list:
+        subprocess.run(['python', script_name] + args_list)
+    else:
+        subprocess.run(['python', script_name])
+
+
 def check_args(args):
-    fetch_spacex_images_args = []
-    if args.id:
-        fetch_spacex_images_args.extend(['-id', args.id])
-    if args.pa:
-        fetch_spacex_images_args.extend(['-pa', args.pa])
-    subprocess.run(['python', 'fetch_spacex_images.py'] + fetch_spacex_images_args)
-    if not any([args.id, args.pa]):
-        subprocess.call(['python', 'fetch_spacex_images.py'])
-    fetch_nasa_epic_images_args = []
-    if args.d:
-        fetch_nasa_epic_images_args.extend(['-d', args.d])
-    if args.pa:
-        fetch_nasa_epic_images_args.extend(['-pa', args.pa])
-    subprocess.run(['python', 'fetch_nasa_epic_images.py'] + fetch_nasa_epic_images_args)
-    if not any([args.d, args.pa]):
-        subprocess.call(['python', 'fetch_nasa_epic_images.py'])
-    fetch_nasa_apod_images_args = []
-    if args.da:
-        fetch_nasa_apod_images_args.extend(['-da', args.da])
-    if args.pa:
-        fetch_nasa_apod_images_args.extend(['-pa', args.pa])
-    if args.am:
-        fetch_nasa_apod_images_args.extend(['-am', args.am])
-    subprocess.run(['python', 'fetch_nasa_apod_images.py'] + fetch_nasa_apod_images_args)
-    if not any([args.da, args.pa, args.am]):
-        subprocess.call(['python', 'fetch_nasa_apod_images.py'])
-    publishing_to_tg_args = []
-    if args.t:
-        publishing_to_tg_args.extend(['-t', args.t])
-    if args.p:
-        publishing_to_tg_args.extend(['-p', args.p])
-    if args.pa:
-        publishing_to_tg_args.extend(['-pa', args.pa])
-    subprocess.call(['python', 'publishing_to_tg.py'] + publishing_to_tg_args)
-    if not any([args.p, args.pa, args.t]):
-        subprocess.call(['python', 'publishing_to_tg.py'])
+    scripts_args = {
+        'fetch_spacex_images.py': [('id', '-id'), ('pa', '-pa')],
+        'fetch_nasa_epic_images.py': [('d', '-d'), ('pa', '-pa')],
+        'fetch_nasa_apod_images.py': [('da', '-da'), ('pa', '-pa'), ('am', '-am')],
+        'publishing_to_tg.py': [('t', '-t'), ('p', '-p'), ('pa', '-pa')]
+    }
+    for script, arg_keys in scripts_args.items():
+        script_args = []
+        for attr, flag in arg_keys:
+            if getattr(args, attr):
+                script_args.extend([flag, getattr(args, attr)])
+        run_subprocess(script, script_args)
 
 
 def main():
