@@ -3,11 +3,11 @@ import os
 from urllib.parse import urlparse
 from configure_keys import load_keys
 from images_saver import save_img
-from file_extension import extension_returner
-from connection_errors import secure_request
+from file_extension import returns_extension
+from connection_errors import requests_retries
 
 
-def args_parser():
+def parse_arguments():
     parser = argparse.ArgumentParser(
         description='Скрипт загружает и сохраняет Последние APOD-фото от NASA'
     )
@@ -32,7 +32,7 @@ def request_nasa(token, date, amount):
             "api_key": token,
             "date": {date}
         }
-    response = secure_request(url, params=payload)
+    response = requests_retries(url, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -42,13 +42,13 @@ def check_url(json, path):
         img_url = json['hdurl']
         save_img(img_url,
                  os.path.splitext(os.path.split((urlparse(img_url)).path)[1])[0],
-                 extension_returner(img_url), path)
+                 returns_extension(img_url), path)
     except KeyError:
         pass
 
 
 def main():
-    args = args_parser()
+    args = parse_arguments()
     image_response = request_nasa(load_keys("NASE_KEY"), date=args.da, amount=args.am)
     if isinstance(image_response, list):
         for image in image_response:

@@ -27,12 +27,12 @@ def run_subprocess(script_name, args_list):
         subprocess.run(['python', script_name])
 
 
-def check_args(args):
+def check_and_runs_args(args):
     scripts_args = {
         'fetch_spacex_images.py': [('id', '-id'), ('pa', '-pa')],
         'fetch_nasa_epic_images.py': [('d', '-d'), ('pa', '-pa')],
         'fetch_nasa_apod_images.py': [('da', '-da'), ('pa', '-pa'), ('am', '-am')],
-        'publishing_to_tg.py': [('t', '-t'), ('p', '-p'), ('pa', '-pa')]
+        'publish_to_tg.py': [('t', '-t'), ('p', '-p'), ('pa', '-pa')]
     }
     for script, arg_keys in scripts_args.items():
         script_args = []
@@ -43,7 +43,7 @@ def check_args(args):
 
 
 def main():
-    check_args(args_parser())
+    check_and_runs_args(args_parser())
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 import os
 import argparse
-from connection_errors import secure_request
+from connection_errors import requests_retries
 
 
-def args_parser():
+def parse_arguments():
     parser = argparse.ArgumentParser(
         description='Скрипт сохраняет изображения'
     )
@@ -19,21 +19,21 @@ def args_parser():
     return parser.parse_args()
 
 
-def save_img(url, filename, image_format="jpeg", path="images", payload=()):
+def save_img(url, filename, image_format="jpeg", path="images", payload=None):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     if path == "images":
         full_path = os.path.join(script_dir, path, f"{filename}")
     else:
         full_path = os.path.join(path, f"{filename}")
     os.makedirs(path, exist_ok=True)
-    response = secure_request(url, params=payload)
+    response = requests_retries(url, params=payload)
     response.raise_for_status()
     with open(f"{full_path}{image_format}", 'wb') as file:
         file.write(response.content)
 
 
 def main():
-    args = args_parser()
+    args = parse_arguments()
     save_img(args.url, args.filename, args.img_format, args.pa, args.payload)
 
 

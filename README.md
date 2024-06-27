@@ -124,15 +124,15 @@ python fetch_spacex_images.py -pa C:\space_images
 
 - ` -p ` Где ` epic_1b_20240611134201`  - это название фото из папки ` image`.
 ```bash
-python publishing_to_tg.py -p epic_1b_20240611134201
+python publish_to_tg.py -p epic_1b_20240611134201
 ```
 - ` -t ` Где `4`  - Задаёт время в часах между публикациями в Telegram канале. По умолчанию составляет 4 часа.
 ```bash
-python publishing_to_tg.py -t 4
+python publish_to_tg.py -t 4
 ```
 - ` -pa ` Где `C:\space_images`  - Путь к папке откуда загружаются фото. Стандартно фото хранятся в папке `images`
 ```bash
-python publishing_to_tg.py -pa C:\space_images
+python publish_to_tg.py -pa C:\space_images
 ```
 ---
 
